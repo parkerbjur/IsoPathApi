@@ -1,0 +1,21 @@
+{
+  "name": "isopathapi",
+  "version": "0.0.1",
+  "description": "API for the IsoPath game",
+  "main": "main.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.11.14",
+    "simple-oauth2": "^4.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.19.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Parker Bjur",
+  "license": "ISC"
+}
