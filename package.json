@@ -7,8 +7,7 @@
     "bcrypt": "^5.0.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.11.14",
-    "simple-oauth2": "^4.2.0"
+    "mongoose": "^5.11.14"
   },
   "devDependencies": {
     "eslint": "^7.19.0",
