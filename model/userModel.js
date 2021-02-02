@@ -1,11 +1,9 @@
-const { Mongoose } = require("mongoose");
-
 mongoose = require('./dbConnection');
 
 const UserSchema = new mongoose.Schema({
-    name: String,
+    username: String,
     password: String,
-    salt: String,
+    email: String,
     rating: Number,
     games: [String],
 });
