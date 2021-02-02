@@ -4,6 +4,7 @@
   "description": "API for the IsoPath game",
   "main": "main.js",
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "express": "^4.17.1",
     "mongoose": "^5.11.14",
     "simple-oauth2": "^4.2.0"
