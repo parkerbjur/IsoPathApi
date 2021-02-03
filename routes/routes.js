@@ -7,16 +7,4 @@ const port = process.env.PORT || 3000;
 
 app.listen(port);
 
-router.post('/api/game/seek', (req, res) => {
-
-});
-
-router.post('/api/game/move', (req, res) => {
-
-});
-
-app.post('/api/challenge/', (req, res) => {
-
-});
-
 module.exports = router;
