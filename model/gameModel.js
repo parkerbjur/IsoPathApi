@@ -1,6 +1,8 @@
 const mongoose = require('./dbConnection');
 
 const GameSchema = new mongoose.Schema({
+  black: String,
+  white: String,
   running: Boolean,
   rated: Boolean,
   state: String,
