@@ -1,5 +1,14 @@
 const mongoose = require('./dbConnection');
 
+/**
+ * @class {} challengeSchma
+ * @param {String} challenger
+ * @param {String} challengee
+ * @param {Boolean} rated
+ * @param {Number} clockTime
+ * @param {Number} clockIncrement
+ * @param {String} color ['BLACK', 'WHITE', 'RANDOM']
+ */
 const challengeSchema = new mongoose.Schema({
   challenger: String,
   challengee: String,
