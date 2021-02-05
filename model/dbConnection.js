@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 try {
-  mongoose.connect('mongodb://localhost:27017/myapp', { useNewUrlParser: true });
+  mongoose.connect('mongodb://localhost:27017', { useNewUrlParser: true, useUnifiedTopology: true });
 } catch (error) {
   console.error(error);
 }
 
-exports.mongoose = mongoose;
+module.exports = mongoose;
