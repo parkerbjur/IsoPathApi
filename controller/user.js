@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const UserModel = require('../model/userModel');
 require('dotenv').config();
 
-exports.signup = (req, res, next) => {
+exports.signup = (req, res) => {
   bcrypt.hash(req.body.password, 10).then(
     (hash) => {
       const user = new UserModel({
@@ -29,7 +29,7 @@ exports.signup = (req, res, next) => {
   );
 };
 
-exports.login = (req, res, next) => {
+exports.login = (req, res) => {
   UserModel.findOne({ email: req.body.email }).then(
     (user) => {
       if (!user) {
