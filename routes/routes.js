@@ -1,10 +1,12 @@
+require('dotenv');
 const express = require('express');
-require('dotenv').config();
 
 const app = express();
-const router = express.Router();
 const port = process.env.PORT || 3000;
 
-app.listen(port);
+app.use('/game', require('./game'));
+app.use('/user', require('./user'));
 
-module.exports = router;
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
+});
