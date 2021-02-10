@@ -7,10 +7,10 @@ require('dotenv').config();
 exports.signup = (req, res) => {
   bcrypt.hash(req.body.password, 10).then(
     (hash) => {
-      const user = new UserModel({
+      const user = new UserModel.User({
         username: req.body.username,
         email: req.body.email,
-        passwor: hash,
+        password: hash,
       });
       user.save().then(
         () => {
@@ -30,7 +30,7 @@ exports.signup = (req, res) => {
 };
 
 exports.login = (req, res) => {
-  UserModel.findOne({ email: req.body.email }).then(
+  UserModel.User.findOne({ email: req.body.email }).then(
     (user) => {
       if (!user) {
         return res.status(401).json({
