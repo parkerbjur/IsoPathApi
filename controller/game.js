@@ -16,6 +16,13 @@ exports.challenge = (req, res) => {
         message: 'Challenge Created',
       });
     },
+  ).catch(
+    (error) => {
+      console.error(error);
+      res.status(500).json({
+        error,
+      });
+    },
   );
 };
 
