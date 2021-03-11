@@ -72,14 +72,13 @@ exports.login = (req, res) => {
 
 exports.authorize = (req, res, next) => {
   try {
-    const token = req.headers.authorization.split(' ')[1];
-    const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
-    const { userId } = decodedToken;
-    if (req.body.userId !== userId) {
+    if (req.body.userId
+      !== jwt.verify(req.headers.authorization, process.env.TOKEN_SECRET).userId) {
       res.status(401).json({
         error: new Error('Invalid User Id'),
       });
     } else {
+      console.log('next');
       next();
     }
   } catch {
