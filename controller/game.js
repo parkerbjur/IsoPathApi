@@ -26,6 +26,14 @@ exports.challenge = (req, res) => {
   );
 };
 
+exports.getChallenges = (req, res) => {
+  ChallengeModel.Challenge.find({ challengee: req.body.userId }).then(
+    (challenges) => {
+      res.status(200).json({ challenges });
+    },
+  );
+};
+
 exports.acceptChallenge = (req, res) => {
   const game = {
     running: true,
