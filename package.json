@@ -17,7 +17,8 @@
     "eslint-plugin-import": "^2.22.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node routes/routes.js"
   },
   "author": "Parker Bjur",
   "license": "ISC"
