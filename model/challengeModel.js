@@ -9,7 +9,7 @@ const mongoose = require('./dbConnection');
  * @param {Number} clockIncrement
  * @param {String} color ['BLACK', 'WHITE', 'RANDOM']
  */
-const challengeSchema = new mongoose.Schema({
+const ChallengeSchema = new mongoose.Schema({
   challenger: String,
   challengee: String,
   rated: Boolean,
@@ -22,6 +22,6 @@ const challengeSchema = new mongoose.Schema({
   },
 });
 
-const Challenge = mongoose.model('Challenge', challengeSchema);
+const Challenge = mongoose.model('Challenge', ChallengeSchema);
 
 exports.Challenge = Challenge;
