@@ -20,6 +20,7 @@ exports.signup = (req, res) => {
         },
       ).catch(
         (error) => {
+          console.error(error);
           res.status(500).json({
             error,
           });
@@ -34,14 +35,14 @@ exports.login = (req, res) => {
     (user) => {
       if (!user) {
         return res.status(401).json({
-          error: new Error('User not found!'),
+          error: 'User not found!',
         });
       }
       bcrypt.compare(req.body.password, user.password).then(
         (valid) => {
           if (!valid) {
             return res.status(401).json({
-              error: new Error('Incorrect password!'),
+              error: 'Incorrect password!',
             });
           }
           const token = jwt.sign(
@@ -75,15 +76,16 @@ exports.authorize = (req, res, next) => {
     if (req.body.userId
       !== jwt.verify(req.headers.authorization, process.env.TOKEN_SECRET).userId) {
       res.status(401).json({
-        error: new Error('Invalid User Id'),
+        error: 'Invalid User Id',
       });
     } else {
       console.log('next');
       next();
     }
-  } catch {
+  } catch (error) {
+    console.error(error);
     res.status(401).json({
-      error: new Error('Invalid request!'),
+      error: 'Invalid request!',
     });
   }
 };
