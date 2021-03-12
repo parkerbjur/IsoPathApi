@@ -48,7 +48,7 @@ exports.login = (req, res) => {
           const token = jwt.sign(
             { userId: user._id },
             process.env.TOKEN_SECRET,
-            { expiresIn: '24h' },
+            { expiresIn: '24hr' },
           );
           res.status(200).json({
             username: user.username,
@@ -79,7 +79,6 @@ exports.authorize = (req, res, next) => {
         error: 'Invalid User Id',
       });
     } else {
-      console.log('next');
       next();
     }
   } catch (error) {
