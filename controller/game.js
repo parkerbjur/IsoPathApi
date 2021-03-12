@@ -2,7 +2,7 @@ const ChallengeModel = require('../model/challengeModel');
 const GameModel = require('../model/gameModel');
 
 exports.challenge = (req, res) => {
-  const newChallenge = new ChallengeModel({
+  const newChallenge = new ChallengeModel.Challenge({
     challenger: req.body.challenger,
     challengee: req.body.challengee,
     rated: req.body.rated,
