@@ -38,6 +38,9 @@ exports.acceptChallenge = (req, res) => {
   const game = {
     running: true,
     rated: req.body.rated,
+    state: '',
+    moves: '',
+    events: [],
   };
 
   if (req.body.challengerColor === 'RANDOM') {
@@ -57,12 +60,7 @@ exports.acceptChallenge = (req, res) => {
     });
   }
 
-  game.save().then((data) => {
-    res.status(4001).json({
-      message: 'Game Created',
-      data,
-    });
-  });
+  GameModel.Game({ game }).save();
 };
 
 exports.createGame = (game) => {
