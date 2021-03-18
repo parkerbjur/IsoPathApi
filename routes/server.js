@@ -15,6 +15,7 @@ app.get('/', (req, res) => { res.json(req.body); });
 const wsServer = new WebSocket.Server({ noServer: true });
 wsServer.on('connection', (socket) => {
   socket.on('message', (message) => console.log(message));
+  exports.socket = socket;
 });
 
 const server = app.listen(port, () => {
