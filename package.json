@@ -19,7 +19,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node routes/routes.js"
+    "start": "node routes/server.js"
   },
   "author": "Parker Bjur",
   "license": "ISC"
