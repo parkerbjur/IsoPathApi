@@ -19,7 +19,7 @@ wsServer.on('connection', (socket) => {
     wsServer.functions[JSON.parse(data.eventType)](data);
   });
 });
-exports.wsServer.regesterListener = (data) => {
+exports.wsServer.registerListener = (data) => {
   wsServer.functions[data.eventType] = data.function;
 };
 
