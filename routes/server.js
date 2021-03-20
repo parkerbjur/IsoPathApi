@@ -14,12 +14,22 @@ app.get('/', (req, res) => { res.json(req.body); });
 
 const wsServer = new WebSocket.Server({ noServer: true });
 
+wsServer.startup = [];
 wsServer.on('connection', (socket) => {
+  console.log(wsServer.startup);
+  wsServer.startup.forEach((action) => {
+    action();
+  });
+
   socket.on('message', (data) => {
     wsServer.functions[JSON.parse(data.eventType)](data);
   });
 });
-exports.wsServer.registerListener = (data) => {
+
+wsServer.registerStatupListener = (data) => {
+  wsServer.startup.push(data);
+};
+wsServer.registerListener = (data) => {
   wsServer.functions[data.eventType] = data.function;
 };
 
@@ -32,3 +42,7 @@ server.on('upgrade', (request, socket, head) => {
     wsServer.emit('connection', ws, request);
   });
 });
+
+exports.registerListener = wsServer.registerListener;
+exports.registerStatupListener = wsServer.registerStatupListener;
+require('./listeners')();
