@@ -9,7 +9,8 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.11.14"
+    "mongoose": "^5.11.14",
+    "ws": "^7.4.4"
   },
   "devDependencies": {
     "eslint": "^7.19.0",
@@ -18,7 +19,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node routes/routes.js"
+    "start": "node routes/server.js"
   },
   "author": "Parker Bjur",
   "license": "ISC"
