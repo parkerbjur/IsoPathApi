@@ -1,7 +1,4 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
-
 
 - name: ESLint Action eslintrc
   uses: mrdivyansh/eslint-action@v1.0.7
