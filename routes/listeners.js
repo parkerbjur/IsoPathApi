@@ -2,6 +2,12 @@ const { registerListener, registerStatupListener } = require('./server');
 
 module.exports = () => {
   registerStatupListener(() => {
-    console.log('listener registered and running');
+    console.log('startup listener');
+  });
+  registerListener({
+    eventType: 'move',
+    function: () => {
+      console.log('move listener');
+    },
   });
 };
