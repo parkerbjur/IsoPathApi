@@ -15,14 +15,14 @@ app.get('/', (req, res) => { res.json(req.body); });
 const wsServer = new WebSocket.Server({ noServer: true });
 
 wsServer.startup = [];
+wsServer.functions = {};
 wsServer.on('connection', (socket) => {
-  console.log(wsServer.startup);
   wsServer.startup.forEach((action) => {
     action();
   });
 
   socket.on('message', (data) => {
-    wsServer.functions[JSON.parse(data.eventType)](data);
+    wsServer.functions[JSON.parse(data).eventType](data);
   });
 });
 
