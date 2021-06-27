@@ -3,13 +3,11 @@ const app = require('express')();
 const bodyParser = require('body-parser');
 const WebSocket = require('ws');
 const gameRoutes = require('./game');
-const userRoutes = require('./user');
 
 const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 app.use('/api/game', gameRoutes);
-app.use('/api/user', userRoutes);
 app.get('/', (req, res) => { res.json(req.body); });
 
 const wsServer = new WebSocket.Server({ noServer: true });

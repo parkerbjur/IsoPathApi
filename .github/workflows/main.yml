@@ -1,4 +1,0 @@
-name: CI
-
-- name: ESLint Action eslintrc
-  uses: mrdivyansh/eslint-action@v1.0.7
