@@ -10,7 +10,7 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.14",
-    "ws": "^7.4.4"
+    "socket.io": "^4.1.2"
   },
   "devDependencies": {
     "eslint": "^7.19.0",
@@ -22,5 +22,9 @@
     "start": "node routes/server.js"
   },
   "author": "Parker Bjur",
-  "license": "ISC"
+  "license": "ISC",
+  "optionalDependencies": {
+    "bufferutil": "^4.0.3",
+    "utf-8-validate": "^5.0.5"
+  }
 }
