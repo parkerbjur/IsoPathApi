@@ -14,3 +14,11 @@ const port = process.env.PORT || 3000;
 app.use(bodyParser);
 app.use('/api/game', gameRoutes);
 app.get('/', (req, res) => { res.json(req.body); });
+
+io.on('connection', (socket) => {
+  console.log(`a user connected at ${socket}`);
+});
+
+server.listen(port, () => {
+  console.log(`listening on *:${port}`);
+});
