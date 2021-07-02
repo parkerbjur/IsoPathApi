@@ -1,6 +1,6 @@
 # IsoPathApi
 ## Description
-Isopath is an abstract board game invented by [pocket83](https://www.youtube.com/user/pocket83). For more information about the game itself, it is highly recomended to watch his videos concerning the game. This project is an effort to make an open source Isopath server (taking a huge amount of inspiration from [lichess](https://github.com/ornicar/lila). 
+Isopath is an abstract board game invented by [pocket83](https://www.youtube.com/user/pocket83). For more information about the game itself, it is highly recomended to watch his videos concerning the game. This project is an effort to make an open source Isopath server (taking a huge amount of inspiration from [lichess](https://github.com/ornicar/lila)). 
 
 ## Installation
 Running the project will require [NodeJS](https://nodejs.org/)
