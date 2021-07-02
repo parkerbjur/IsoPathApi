@@ -13,10 +13,12 @@ const port = process.env.PORT || 3000;
 app.use(bodyParser);
 app.get('/', (req, res) => { res.json(req.body); });
 
+const handlers = require('./handlers');
+
 io.on('connection', (socket) => {
   console.log(`a user connected at ${socket}`);
 
-  
+  handlers(io, socket);
 
   socket.on('disconnect', () => {
     console.log('user disconnected');
