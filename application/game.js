@@ -14,6 +14,6 @@ module.exports = {
 
   playMove: (args) => {
     const { gameID } = JSON.parse(args);
-    this.games.gameID.playMove();
+    this.games[gameID].playMove();
   },
 };
