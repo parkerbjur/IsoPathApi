@@ -9,11 +9,15 @@ module.exports = {
     socket1.join(gameID);
     socket2.join(gameID);
     this.games[gameID] = new Board(socket1, socket2, gameID);
-    server.io.to(gameID).emit('game:create');
+
+    server.io.to(gameID).emit('game:create', {
+      gameID,
+      IBN: this.games[gameID].IBN,
+    });
   },
 
   playMove: (args) => {
     const { gameID } = JSON.parse(args);
-    this.games[gameID].playMove();
+    this.games[gameID].playMove(JSON.parse(args));
   },
 };

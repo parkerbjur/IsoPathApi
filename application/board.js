@@ -1,5 +1,89 @@
-exports.Board = {
-  board: {
+const { io } = require('../interaction/server');
+
+class Board {
+  constructor(socket1, socket2, gameID) {
+    this.gameID = gameID;
+
+    if (Math.round(Math.random()) === 1) {
+      this.player1 = socket1;
+      this.player2 = socket2;
+    } else {
+      this.player1 = socket2;
+      this.player2 = socket1;
+    }
+  }
+
+  IBN = {
+    plys: 0,
+    turn: 0,
+    places: {
+      A1: { tile: 0, piece: 0 },
+      A2: { tile: 0, piece: 0 },
+      A3: { tile: 0, piece: 0 },
+      A4: { tile: 0, piece: 0 },
+      B1: { tile: 1, piece: 1 },
+      B2: { tile: 1, piece: 1 },
+      B3: { tile: 1, piece: 1 },
+      B4: { tile: 1, piece: 1 },
+      B5: { tile: 1, piece: 1 },
+      C1: { tile: 1, piece: 1 },
+      C2: { tile: 1, piece: 1 },
+      C3: { tile: 1, piece: 1 },
+      C4: { tile: 1, piece: 1 },
+      C5: { tile: 1, piece: 1 },
+      C6: { tile: 1, piece: 1 },
+      D1: { tile: 1, piece: 1 },
+      D2: { tile: 1, piece: 1 },
+      D3: { tile: 1, piece: 1 },
+      D4: { tile: 1, piece: 1 },
+      D5: { tile: 1, piece: 1 },
+      D6: { tile: 1, piece: 1 },
+      D7: { tile: 1, piece: 1 },
+      E1: { tile: 1, piece: 1 },
+      E2: { tile: 1, piece: 1 },
+      E3: { tile: 1, piece: 1 },
+      E4: { tile: 1, piece: 1 },
+      E5: { tile: 1, piece: 1 },
+      E6: { tile: 1, piece: 1 },
+      F1: { tile: 1, piece: 1 },
+      F2: { tile: 1, piece: 1 },
+      F3: { tile: 1, piece: 1 },
+      F4: { tile: 1, piece: 1 },
+      F5: { tile: 1, piece: 1 },
+      G1: { tile: 2, piece: 2 },
+      G2: { tile: 2, piece: 2 },
+      G3: { tile: 2, piece: 2 },
+      G4: { tile: 2, piece: 2 },
+    },
+  }
+
+  playMove(data) {
+    const { move } = data;
+
+    if (!this.moveIsValid(this.IBN, move)) {
+      return false;
+    }
+
+    // remove tile from tile source
+    this.IBN.places[move.tile.source].tile += -1;
+    // add tile to tile sink
+    this.IBN.places[move.tile.sink].tile += 1;
+
+    // remove piece from piece source
+    this.IBN.places[move.piece.source].piece = 1;
+    // add piece to piece sink
+    this.IBN.places[move.piece.sink].piece = this.IBN.turn;
+
+    // change turn
+    this.IBN.turn = (this.IBN.turn === 0) ? 2 : 0;
+
+    // increase ply by one
+    this.IBN.ply += 1;
+
+    io.to(this.gameID).emit('move:confirm', this.IBN);
+  }
+
+  static adjacencies = {
     A1: ['A2', 'A4', 'B1', 'B2'],
     A2: ['A1', 'A3', 'B2', 'B3'],
     A3: ['A2', 'A4', 'B3', 'B4'],
@@ -37,5 +121,7 @@ exports.Board = {
     G2: ['F2', 'F3', 'G1', 'G3'],
     G3: ['F3', 'F4', 'G2', 'G4'],
     G4: ['F4', 'F5', 'G1', 'G3'],
-  },
-};
+  }
+}
+
+exports.Board = Board;
