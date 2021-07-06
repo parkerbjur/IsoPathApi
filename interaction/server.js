@@ -4,7 +4,7 @@ const bodyParser = require('body-parser').json();
 const http = require('http');
 
 const server = http.createServer(app);
-const Server = require('socket.io');
+const { Server } = require('socket.io');
 
 const io = new Server(server);
 exports.io = io;
