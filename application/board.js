@@ -83,6 +83,47 @@ class Board {
     io.to(this.gameID).emit('move:confirm', this.IBN);
   }
 
+  moveIsValid(IBN, move) {
+    // check if tile source has a tile to move and no piece on it
+    if (IBN.places[move.tile.source].tile === 0) {
+      return false;
+    }
+    if (IBN.places[move.tile.source].piece !== 1) {
+      return false;
+    }
+
+    // check if tile sink can accept a tile and has no piece on it
+    if (IBN.places[move.tile.sink].tile === 2) {
+      return false;
+    }
+    if (IBN.places[move.tile.sink].piece !== 1) {
+      return false;
+    }
+
+    const tempIBN = IBN;
+    tempIBN.places[move.tile.source].tile += -1;
+    tempIBN.places[move.tile.sink].tile += 1;
+
+    // check if piece source has a valid piece on it
+    if (IBN.places[move.piece.source].piece !== IBN.turn) {
+      return false;
+    }
+
+    // check if piece sink is adjacent so source
+    if (!this.placesAreAdjacent(move.piece.source, move.piece.sink)) {
+      return false;
+    }
+    // check if piece sink is appropriate level
+    if (IBN.turn !== tempIBN.places[move.piece.sink].tile) {
+      return false;
+    }
+    // ckeck if piece sink can accept a piece
+    if (IBN.places[move.piece.sink].piece !== 1) {
+      return false;
+    }
+    return true;
+  }
+
   static adjacencies = {
     A1: ['A2', 'A4', 'B1', 'B2'],
     A2: ['A1', 'A3', 'B2', 'B3'],
