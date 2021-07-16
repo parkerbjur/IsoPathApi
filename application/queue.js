@@ -1,14 +1,12 @@
 const game = require('./game');
 
-const queue = {
+module.exports = {
   queue: [],
 
-  enterQueue: (socket) => {
-    this.queue.queue.unshift(socket);
+  enterQueue(socket) {
+    this.queue.unshift(socket);
     if (this.queue.length > 1) {
       game.createGame(this.queue.pop(), this.queue.pop());
     }
   },
 };
-
-exports.queue = queue;
