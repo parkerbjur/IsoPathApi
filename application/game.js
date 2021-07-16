@@ -4,8 +4,8 @@ const { Board } = require('./board');
 module.exports = {
   games: {},
 
-  createGame: (socket1, socket2) => {
-    const gameID = Date() + String(Math.floor(Math.random() * 100));
+  createGame(socket1, socket2) {
+    const gameID = Date.now() + String(Math.floor(Math.random() * 100));
     socket1.join(gameID);
     socket2.join(gameID);
     this.games[gameID] = new Board(socket1, socket2, gameID);
