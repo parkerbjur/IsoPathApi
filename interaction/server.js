@@ -2,6 +2,7 @@ require('dotenv').config();
 const app = require('express')();
 const bodyParser = require('body-parser').json();
 const http = require('http');
+const path = require('path');
 
 const server = http.createServer(app);
 const { Server } = require('socket.io');
@@ -13,6 +14,7 @@ const port = process.env.PORT || 3000;
 
 app.use(bodyParser);
 app.get('/', (req, res) => { res.json(req.body); });
+app.get('/board', (req, res) => { res.sendFile(path.join(__dirname, '../view/board.html')); });
 
 const handlers = require('./handlers');
 
