@@ -2,7 +2,49 @@
 <html lang="en">
 <head>
   <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
   <script>
+    var Hex = fabric.util.createClass(fabric.Polygon, {
+      type: 'Hex',
+      initialize: function(options){
+        options || (options = {});
+
+        points = []
+        points.push({ x: options.Xcenter +  options.size * Math.cos(.5), y: options.Ycenter +  options.size *  Math.sin(.5)})
+        for (var i = 1; i <= 6;i += 1) {
+          points.push({x: options.Xcenter + options.size * Math.cos((i + .5) * 2 * Math.PI / 6), y: options.Ycenter + options.size * Math.sin((i + .5) * 2 * Math.PI / 6)});
+        }
+
+        this.callSuper('initialize', points, options);
+      }
+    })
+
+    function drawBoard(options) {
+      ({height} = options);
+      
+      R = height / 11;
+      r = (Math.sqrt(3)/2) * R;
+
+      let objs = [];
+      for(i = 0; i < 7; i++){
+        for(j = 0; j < 7 - Math.abs(3 - i); j++){
+          x = r * (Math.abs(3 - i) + 2*j + 1)
+          y = R * ((1.5 * (i+1) - .5))
+          objs.push(new Hex({Xcenter: x, Ycenter: y, size: R}))
+        }
+      }
+
+      objs.forEach((item) => canvas.add(item));
+    };
+
+
+    let canvas;
+    let ctx;
+    function initializeCanvas() {
+      canvas = new fabric.Canvas('canvas');
+
+      drawBoard({height: canvas.getHeight()})
+    }
 
     const socket = io();
     let gameID;
@@ -24,11 +66,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
-<body>
+<body onload="initializeCanvas()" >
 
   <button onmousedown="joinGame()">Game Search</button>
   <br>
   <input type="text"><input type="button" value="Submit">
+  <br>
+  <canvas id="canvas" width="400" height="300"></canvas>
 
 </body>
 </html>
