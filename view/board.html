@@ -45,20 +45,17 @@
       }
     })
 
+    function updateBoard(IBN){
+      for (const place in IBN.places){
+        objs[place].set('tileLevel', IBN.places[place].tile);
+        objs[place].set('stoneLevel', IBN.places[place].stone);
+      }
+      canvas.renderAll();
+    }
+
     function submitMove(move) {
       if(gameID === "") {return};
-      let placeConversion = {
-        0: "A",
-        1: "B",
-        2: "C",
-        3: "D", 
-        4: "E",
-        5: "F",
-        6: "G"
-      }
-      for(const key in move){
-        move[key] = (() => { return placeConversion[move[key][0]] + ( parseInt(move[key][2]) + 1)})();
-      }
+
       ({tileSource, tileSink, stoneSource, stoneSink} = move);
       move = {
         tile: {
@@ -100,6 +97,17 @@
           x = r * (Math.abs(3 - i) + 2*j + 1)
           y = R * ((1.5 * (i+1) - .5))
 
+          let placeConversion = {
+            0: "A",
+            1: "B",
+            2: "C",
+            3: "D", 
+            4: "E",
+            5: "F",
+            6: "G"
+          }
+          let label = (() => { return placeConversion[i] + ( j + 1)})()
+
           let stoneLevel = 1;
           let tileLevel = 1;
           if(i === 0){
@@ -111,29 +119,29 @@
             tileLevel = 2;
           }
 
-          objs.push(
-            new Hex({
-              Xcenter: x,
-              Ycenter: y,
-              size: R,
-              perPixelTargetFind: true,
-              hasControls: false,
-              hasBorders: false,
-              lockMovementX: true,
-              lockMovementY: true,
-              label: `${i},${j}`,
-              stoneLevel: stoneLevel,
-              tileLevel: tileLevel,
-            })
-          )
+          objs[label] = new Hex({
+                          Xcenter: x,
+                          Ycenter: y,
+                          size: R,
+                          perPixelTargetFind: true,
+                          hasControls: false,
+                          hasBorders: false,
+                          lockMovementX: true,
+                          lockMovementY: true,
+                          label: label,
+                          stoneLevel: stoneLevel,
+                          tileLevel: tileLevel,
+                          objectCaching: false
+                        })
+          
 
-          objs[objs.length - 1].on('selected', function(event) {
+          objs[label].on('selected', function(event) {
             placeSelected(event);
           })
+
+          canvas.add(objs[label]);
         }
       }
-
-      objs.forEach((item) => canvas.add(item));
     };
 
     let canvas;
@@ -158,6 +166,7 @@
 
     socket.on('move:confirm', (IBN) => {
       console.log(IBN, objs);
+      updateBoard(IBN);
     })
 
   </script>
