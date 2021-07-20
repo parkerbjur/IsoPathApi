@@ -17,43 +17,43 @@ class Board {
     plys: 0,
     turn: 0,
     places: {
-      A1: { tile: 0, piece: 0 },
-      A2: { tile: 0, piece: 0 },
-      A3: { tile: 0, piece: 0 },
-      A4: { tile: 0, piece: 0 },
-      B1: { tile: 1, piece: 1 },
-      B2: { tile: 1, piece: 1 },
-      B3: { tile: 1, piece: 1 },
-      B4: { tile: 1, piece: 1 },
-      B5: { tile: 1, piece: 1 },
-      C1: { tile: 1, piece: 1 },
-      C2: { tile: 1, piece: 1 },
-      C3: { tile: 1, piece: 1 },
-      C4: { tile: 1, piece: 1 },
-      C5: { tile: 1, piece: 1 },
-      C6: { tile: 1, piece: 1 },
-      D1: { tile: 1, piece: 1 },
-      D2: { tile: 1, piece: 1 },
-      D3: { tile: 1, piece: 1 },
-      D4: { tile: 1, piece: 1 },
-      D5: { tile: 1, piece: 1 },
-      D6: { tile: 1, piece: 1 },
-      D7: { tile: 1, piece: 1 },
-      E1: { tile: 1, piece: 1 },
-      E2: { tile: 1, piece: 1 },
-      E3: { tile: 1, piece: 1 },
-      E4: { tile: 1, piece: 1 },
-      E5: { tile: 1, piece: 1 },
-      E6: { tile: 1, piece: 1 },
-      F1: { tile: 1, piece: 1 },
-      F2: { tile: 1, piece: 1 },
-      F3: { tile: 1, piece: 1 },
-      F4: { tile: 1, piece: 1 },
-      F5: { tile: 1, piece: 1 },
-      G1: { tile: 2, piece: 2 },
-      G2: { tile: 2, piece: 2 },
-      G3: { tile: 2, piece: 2 },
-      G4: { tile: 2, piece: 2 },
+      A1: { tile: 0, stone: 0 },
+      A2: { tile: 0, stone: 0 },
+      A3: { tile: 0, stone: 0 },
+      A4: { tile: 0, stone: 0 },
+      B1: { tile: 1, stone: 1 },
+      B2: { tile: 1, stone: 1 },
+      B3: { tile: 1, stone: 1 },
+      B4: { tile: 1, stone: 1 },
+      B5: { tile: 1, stone: 1 },
+      C1: { tile: 1, stone: 1 },
+      C2: { tile: 1, stone: 1 },
+      C3: { tile: 1, stone: 1 },
+      C4: { tile: 1, stone: 1 },
+      C5: { tile: 1, stone: 1 },
+      C6: { tile: 1, stone: 1 },
+      D1: { tile: 1, stone: 1 },
+      D2: { tile: 1, stone: 1 },
+      D3: { tile: 1, stone: 1 },
+      D4: { tile: 1, stone: 1 },
+      D5: { tile: 1, stone: 1 },
+      D6: { tile: 1, stone: 1 },
+      D7: { tile: 1, stone: 1 },
+      E1: { tile: 1, stone: 1 },
+      E2: { tile: 1, stone: 1 },
+      E3: { tile: 1, stone: 1 },
+      E4: { tile: 1, stone: 1 },
+      E5: { tile: 1, stone: 1 },
+      E6: { tile: 1, stone: 1 },
+      F1: { tile: 1, stone: 1 },
+      F2: { tile: 1, stone: 1 },
+      F3: { tile: 1, stone: 1 },
+      F4: { tile: 1, stone: 1 },
+      F5: { tile: 1, stone: 1 },
+      G1: { tile: 2, stone: 2 },
+      G2: { tile: 2, stone: 2 },
+      G3: { tile: 2, stone: 2 },
+      G4: { tile: 2, stone: 2 },
     },
   }
 
@@ -70,10 +70,10 @@ class Board {
     // add tile to tile sink
     this.IBN.places[move.tile.sink].tile += 1;
 
-    // remove piece from piece source
-    this.IBN.places[move.stone.source].piece = 1;
-    // add piece to piece sink
-    this.IBN.places[move.stone.sink].piece = this.IBN.turn;
+    // remove stone from stone source
+    this.IBN.places[move.stone.source].stone = 1;
+    // add stone to stone sink
+    this.IBN.places[move.stone.sink].stone = this.IBN.turn;
 
     // change turn
     this.IBN.turn = (this.IBN.turn === 0) ? 2 : 0;
@@ -84,19 +84,19 @@ class Board {
   }
 
   moveIsValid(IBN, move) {
-    // check if tile source has a tile to move and no piece on it
+    // check if tile source has a tile to move and no stone on it
     if (this.IBN.places[move.tile.source].tile === 0) {
       return false;
     }
-    if (this.IBN.places[move.tile.source].piece !== 1) {
+    if (this.IBN.places[move.tile.source].stone !== 1) {
       return false;
     }
 
-    // check if tile sink can accept a tile and has no piece on it
+    // check if tile sink can accept a tile and has no stone on it
     if (this.IBN.places[move.tile.sink].tile === 2) {
       return false;
     }
-    if (this.IBN.places[move.tile.sink].piece !== 1) {
+    if (this.IBN.places[move.tile.sink].stone !== 1) {
       return false;
     }
 
@@ -104,21 +104,21 @@ class Board {
     tempIBN.places[move.tile.source].tile += -1;
     tempIBN.places[move.tile.sink].tile += 1;
 
-    // check if piece source has a valid piece on it
-    if (this.IBN.places[move.stone.source].piece !== IBN.turn) {
+    // check if stone source has a valid stone on it
+    if (this.IBN.places[move.stone.source].stone !== IBN.turn) {
       return false;
     }
 
-    // check if piece sink is adjacent so source
+    // check if stone sink is adjacent so source
     if (!Board.placesAreAdjacent(move.stone.source, move.stone.sink)) {
       return false;
     }
-    // check if piece sink is appropriate level
+    // check if stone sink is appropriate level
     if (this.IBN.turn !== tempIBN.places[move.stone.sink].tile) {
       return false;
     }
-    // ckeck if piece sink can accept a piece
-    if (this.IBN.places[move.stone.sink].piece !== 1) {
+    // ckeck if stone sink can accept a stone
+    if (this.IBN.places[move.stone.sink].stone !== 1) {
       return false;
     }
     return true;
