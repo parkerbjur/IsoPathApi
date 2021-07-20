@@ -14,10 +14,62 @@
         for (var i = 1; i <= 6;i += 1) {
           points.push({x: options.Xcenter + options.size * Math.cos((i + .5) * 2 * Math.PI / 6), y: options.Ycenter + options.size * Math.sin((i + .5) * 2 * Math.PI / 6)});
         }
+        label = options.label;
 
         this.callSuper('initialize', points, options);
+      },
+
+      _render: function(ctx) {
+        this.callSuper('_render', ctx);
+
+        ctx.font = '10px Helvetica';
+        ctx.fillStyle = '#FFF';
+        ctx.fillText(this.label, 0, 0);
       }
     })
+
+    function submitMove(move) {
+
+      let placeConversion = {
+        0: "A",
+        1: "B",
+        2: "C",
+        3: "D", 
+        4: "E",
+        5: "F",
+        6: "G"
+      }
+      for(const key in move){
+        console.log(move[key]);
+        move[key] = (() => { return placeConversion[move[key][0]] + ( parseInt(move[key][2]) + 1)})();
+      }
+      ({tileSource, tileSink, stoneSource, stoneSink} = move);
+      const newMove = {
+        tile: {
+          source: tileSource,
+          sink: tileSink,
+        },
+        stone: {
+          source: tileSource,
+          sink: tileSink,
+        }
+      }
+      socket.emit('game:playMove', {move, gameID});
+    }
+
+    function placeSelected(event) {
+      ({target} = event);
+      if(document.getElementById('tile-source').value === ""){
+        document.getElementById('tile-source').value = target.label;
+      } else if(document.getElementById('tile-sink').value === ""){
+        document.getElementById('tile-sink').value = target.label;
+      } else if(document.getElementById('stone-source').value === ""){
+        document.getElementById('stone-source').value = target.label;
+      } else if(document.getElementById('stone-sink').value === ""){
+        document.getElementById('stone-sink').value = target.label;
+      }
+      
+    }
 
     function drawBoard(options) {
       ({height} = options);
@@ -30,16 +82,30 @@
         for(j = 0; j < 7 - Math.abs(3 - i); j++){
           x = r * (Math.abs(3 - i) + 2*j + 1)
           y = R * ((1.5 * (i+1) - .5))
-          objs.push(new Hex({Xcenter: x, Ycenter: y, size: R}))
+
+          objs.push(
+            new Hex({
+              Xcenter: x,
+              Ycenter: y,
+              size: R,
+              perPixelTargetFind: true,
+              hasControls: false,
+              lockMovementX: true,
+              lockMovementY: true,
+              label: `${i},${j}`
+            })
+          )
+
+          objs[objs.length - 1].on('selected', function(event) {
+            placeSelected(event);
+          })
         }
       }
 
       objs.forEach((item) => canvas.add(item));
     };
 
-
     let canvas;
-    let ctx;
     function initializeCanvas() {
       canvas = new fabric.Canvas('canvas');
 
@@ -70,9 +136,27 @@
 
   <button onmousedown="joinGame()">Game Search</button>
   <br>
-  <input type="text"><input type="button" value="Submit">
-  <br>
   <canvas id="canvas" width="400" height="300"></canvas>
+  <br>
+  <div>
+    Tile Source: <input type="text" id="tile-source"><br>
+    Tile Sink: <input type="text" id="tile-sink"><br>
+    Stone Source: <input type="text" id="stone-source"><br>
+    Stone Sink: <input type="text" id="stone-sink"><br>
+    <input type="submit" value="Submit" onclick="
+    submitMove({
+      tileSource: document.getElementById('tile-source').value,
+      tileSink: document.getElementById('tile-sink').value,
+      stoneSource: document.getElementById('stone-source').value,
+      stoneSink: document.getElementById('stone-sink').value,
+    });
+    document.getElementById('tile-source').value = '';
+    document.getElementById('tile-sink').value = ''
+    document.getElementById('stone-source').value = ''
+    document.getElementById('stone-sink').value = ''
+    ">
+
+  </div>
 
 </body>
 </html>
