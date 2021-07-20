@@ -16,8 +16,8 @@ module.exports = {
     });
   },
 
-  playMove: (args) => {
-    const { gameID } = JSON.parse(args);
-    this.games[gameID].playMove(JSON.parse(args));
+  playMove(args) {
+    const { gameID } = args;
+    this.games[gameID].playMove(args);
   },
 };
