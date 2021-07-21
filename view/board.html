@@ -27,13 +27,16 @@
       },
 
       _render: function(ctx) {
-        if(this.tileLevel === 0){this.fill = 'rgb(100,100,100)'};
+        if(this.tileLevel === 0){this.fill = 'rgb(90,90,90)'};
         if(this.tileLevel === 1){this.fill = 'rgb(50,50,50)'};
-        if(this.tileLevel === 2){this.fill = 'rgb(0,0,0)'};
+        if(this.tileLevel === 2){this.fill = 'rgb(30,30,30)'};
+        if(this.tileLevel === -1){this.fill = 'rgba(0,0,0,0)'};
+        this.stroke = 'black';
 
-        if(this.stoneLevel === 0){stone.fill = 'rgb(0,0,0)'}
-        if(this.stoneLevel === 1){stone.fill = 'rgba(0,0,0,0)'}
-        if(this.stoneLevel === 2){stone.fill = 'rgb(100,100,100)'}
+        if(this.stoneLevel === 0){stone.fill = 'rgb(30,30,30)'};
+        if(this.stoneLevel === 1){stone.fill = 'rgba(0,0,0,0)'};
+        if(this.stoneLevel === 2){stone.fill = 'rgb(90,90,90)'};
+        if(this.stoneLevel === -1){stone.fill = 'rgba(0,0,0,0'}
 
         this.callSuper('_render', ctx);
 
@@ -54,7 +57,8 @@
     }
 
     function submitMove(move) {
-      if(gameID === "") {return};
+      if(gameID === undefined) {return};
+      if(move.stone.sink == undefined) {return};
       state = 'tileSource'
       document.getElementById('moveSubmit').style.color = 'black'
       socket.emit('game:playMove', {move, gameID});
@@ -185,17 +189,6 @@
           }
           let label = (() => { return placeConversion[i] + ( j + 1)})()
 
-          let stoneLevel = 1;
-          let tileLevel = 1;
-          if(i === 0){
-            stoneLevel = 0;
-            tileLevel = 0;
-          }
-          if(i === 6){
-            stoneLevel = 2;
-            tileLevel = 2;
-          }
-
           objs[label] = new Hex({
                           Xcenter: x,
                           Ycenter: y,
@@ -206,8 +199,8 @@
                           lockMovementX: true,
                           lockMovementY: true,
                           label: label,
-                          stoneLevel: stoneLevel,
-                          tileLevel: tileLevel,
+                          stoneLevel: -1,
+                          tileLevel: -1,
                           objectCaching: false
                         })
           
@@ -226,7 +219,6 @@
       canvas = new fabric.Canvas('canvas');
 
       drawBoard({height: canvas.getHeight()})
-      document.getElementById('canvas').style.display = 'none';
     }
 
     const socket = io();
@@ -234,14 +226,14 @@
     let IBN;
 
     function joinGame() {
+      document.getElementById('gameSearch').remove();
       socket.emit('game:search');
     }
 
     socket.on('game:create', (data) => {
       ({gameID,IBN} = data);
       console.log(data);
-      IBN = IBN
-      document.getElementById('canvas').style.display = 'block';
+      updateBoard(IBN);
       document.getElementById('moves').style.display = 'block'
     })
 
@@ -260,12 +252,12 @@
 </head>
 <body onload="initializeCanvas()" >
 
-  <button onmousedown="joinGame()">Game Search</button>
+  <button onmousedown="joinGame()" id="gameSearch">Game Search</button>
   <br>
   <canvas id="canvas" width="400" height="300" !display="none"></canvas>
   <br>
   <div id="moves" style="display: none;">
-    <input type="button" value="submit" onclick="submitMove(proposedMove)" id="moveSubmit">
+    <input type="button" value="Submit Move" onclick="submitMove(proposedMove)" id="moveSubmit">
 
   </div>
 
