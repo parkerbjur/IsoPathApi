@@ -14,12 +14,13 @@
 
   <button onmousedown="joinGame()" id="gameSearch">Game Search</button>
   <br>
-  <canvas id="canvas" width="400" height="300" !display="none"></canvas>
+  <canvas id="canvas" width="400" height="300"></canvas>
   <br>
   <div id="moves" style="display: none;">
     <input type="button" value="Submit Move" onclick="submitMove(proposedMove)" id="moveSubmit">
 
   </div>
+  <input type="button" onclick="reverseBoard()" value="Flip Board" style="display: none;" id="reverseButton">
 
 </body>
 </html>

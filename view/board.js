@@ -163,8 +163,8 @@ const adjacencyList = {
 
 let objs = [];
 function drawBoard(options) {
-  const { height } = options;
-
+  const { height, reversed } = options;
+  
   const R = height / 11;
   const r = (Math.sqrt(3) / 2) * R;
 
@@ -208,11 +208,30 @@ function drawBoard(options) {
   }
 }
 
+function reverseBoard () {
+  const keys = Object.keys(objs);
+  keys.sort();
+  let locations = {};
+
+  for(let i = 0; i < keys.length; i++){
+    locations[keys[i]] = {};
+    locations[keys[i]].top = objs[keys[i]].top
+    locations[keys[i]].left = objs[keys[i]].left
+  }
+  for(let i = 0; i < keys.length; i++){
+    objs[keys[i]].set('top', locations[keys[keys.length - i - 1]].top);
+    objs[keys[i]].set('left', locations[keys[keys.length - i - 1]].left);
+    console.log(objs[keys[i]]);
+    objs[keys[i]].setCoords();
+  }
+  canvas.renderAll();
+}
+
 let canvas;
 function initializeCanvas() {
   canvas = new fabric.Canvas('canvas');
 
-  drawBoard({ height: canvas.getHeight() });
+  drawBoard({ height: canvas.getHeight() , reversed: true});
 }
 
 const socket = io();
@@ -228,6 +247,7 @@ socket.on('game:create', (data) => {
   ({ gameID, IBN } = data);
   console.log(data);
   updateBoard(IBN);
+  document.getElementById('reverseButton').style.display = 'block';
   document.getElementById('moves').style.display = 'block';
 });
 
