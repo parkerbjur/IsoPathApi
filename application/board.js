@@ -61,8 +61,8 @@ class Board {
     const { move } = data;
 
     if (!this.moveIsValid(this.IBN, move)) {
-      io.to(this.gameID).emit('move:reject');
-      throw new Error('Invalid move');
+      io.to(this.gameID).emit('move:reject', this.IBN);
+      return;
     }
 
     // remove tile from tile source
