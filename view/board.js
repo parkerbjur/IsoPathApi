@@ -55,11 +55,12 @@ function submitMove(move) {
   if (gameID === undefined) { return; }
   if (move.stone.sink == undefined) { return; }
   state = 'tileSource';
+  proposedMove = {tile: {source: undefined, sink: undefined}, stone: {source: undefined, sink: undefined}}
   document.getElementById('moveSubmit').style.color = 'black';
   socket.emit('game:playMove', { move, gameID });
 }
 
-const proposedMove = {
+let proposedMove = {
   tile: {},
   stone: {},
 };
@@ -227,6 +228,28 @@ function reverseBoard () {
   canvas.renderAll();
 }
 
+function clearMove () {
+  if(proposedMove.tile.source != undefined){
+    objs[proposedMove.tile.source].tileLevel += 1;
+    proposedMove.tile.source = undefined
+  }
+  if(proposedMove.tile.sink != undefined){
+    objs[proposedMove.tile.sink].tileLevel -= 1;
+    proposedMove.tile.sink = undefined
+  }
+  if(proposedMove.stone.source != undefined){
+    objs[proposedMove.stone.source].stoneLevel = IBN.turn;
+    proposedMove.stone.source = undefined
+  }
+  if(proposedMove.stone.sink != undefined){
+    objs[proposedMove.stone.sink].stoneLevel = 1;
+    proposedMove.stone.sink = undefined
+  }
+  document.getElementById('moveSubmit').style.color = 'black';
+  state = 'tileSource';
+  canvas.renderAll();
+}
+
 let canvas;
 function initializeCanvas() {
   canvas = new fabric.Canvas('canvas');
@@ -249,6 +272,7 @@ socket.on('game:create', (data) => {
   updateBoard(IBN);
   document.getElementById('reverseButton').style.display = 'block';
   document.getElementById('moves').style.display = 'block';
+  document.getElementById('clearMove').style.display = 'block';
 });
 
 socket.on('move:confirm', (newIBN) => {
