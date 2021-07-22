@@ -74,13 +74,39 @@ class Board {
     this.IBN.places[move.stone.source].stone = 1;
     // add stone to stone sink
     this.IBN.places[move.stone.sink].stone = this.IBN.turn;
-
+    this.checkCaptures();
     // change turn
     this.IBN.turn = (this.IBN.turn === 0) ? 2 : 0;
 
     // increase ply by one
     this.IBN.ply += 1;
     io.to(this.gameID).emit('move:confirm', this.IBN);
+  }
+
+  notTurn() {
+    if (this.IBN.turn === 0) { return 2; }
+    if (this.IBN.turn === 2) { return 0; }
+  }
+
+  checkCaptures() {
+    const places = Object.entries(this.IBN.places);
+    for (let i = 0; i < places.length; i += 1) {
+      console.log(places[i], this.adjacentEnemyStones(places[i][0]))
+      if (places[i][1].stone === this.IBN.turn && this.adjacentEnemyStones(places[i][0]) >= 3) {
+        console.log('captured');
+        this.IBN.places[places[i][0]].stone = 1;
+      }
+    }
+  }
+
+  adjacentEnemyStones(place) {
+    let total = 0;
+    for (let i = 0; i < Board.adjacencyList[place].length; i += 1) {
+      if (this.IBN.places[Board.adjacencyList[place][i]].stone === this.notTurn()) {
+        total += 1;
+      }
+    }
+    return total;
   }
 
   moveIsValid(IBN, move) {
