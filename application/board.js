@@ -60,7 +60,7 @@ class Board {
   playMove(data) {
     const { move } = data;
 
-    if (!this.moveIsValid(this.IBN, move)) {
+    if (!Board.moveIsValid(this.IBN, move)) {
       io.to(this.gameID).emit('move:reject', this.IBN);
       return;
     }
@@ -91,9 +91,7 @@ class Board {
   checkCaptures() {
     const places = Object.entries(this.IBN.places);
     for (let i = 0; i < places.length; i += 1) {
-      console.log(places[i], this.adjacentEnemyStones(places[i][0]))
       if (places[i][1].stone === this.IBN.turn && this.adjacentEnemyStones(places[i][0]) >= 3) {
-        console.log('captured');
         this.IBN.places[places[i][0]].stone = 1;
       }
     }
@@ -109,20 +107,20 @@ class Board {
     return total;
   }
 
-  moveIsValid(IBN, move) {
+  static moveIsValid(IBN, move) {
     // check if tile source has a tile to move and no stone on it
-    if (this.IBN.places[move.tile.source].tile === 0) {
+    if (IBN.places[move.tile.source].tile === 0) {
       return false;
     }
-    if (this.IBN.places[move.tile.source].stone !== 1) {
+    if (IBN.places[move.tile.source].stone !== 1) {
       return false;
     }
 
     // check if tile sink can accept a tile and has no stone on it
-    if (this.IBN.places[move.tile.sink].tile === 2) {
+    if (IBN.places[move.tile.sink].tile === 2) {
       return false;
     }
-    if (this.IBN.places[move.tile.sink].stone !== 1) {
+    if (IBN.places[move.tile.sink].stone !== 1) {
       return false;
     }
 
@@ -131,7 +129,7 @@ class Board {
     tempIBN.places[move.tile.sink].tile += 1;
 
     // check if stone source has a valid stone on it
-    if (this.IBN.places[move.stone.source].stone !== IBN.turn) {
+    if (IBN.places[move.stone.source].stone !== IBN.turn) {
       return false;
     }
 
@@ -140,11 +138,11 @@ class Board {
       return false;
     }
     // check if stone sink is appropriate level
-    if (this.IBN.turn !== tempIBN.places[move.stone.sink].tile) {
+    if (IBN.turn !== tempIBN.places[move.stone.sink].tile) {
       return false;
     }
     // ckeck if stone sink can accept a stone
-    if (this.IBN.places[move.stone.sink].stone !== 1) {
+    if (IBN.places[move.stone.sink].stone !== 1) {
       return false;
     }
     return true;
