@@ -1,4 +1,3 @@
-const server = require('../interaction/server');
 const { Board } = require('./board');
 
 module.exports = {
@@ -8,11 +7,30 @@ module.exports = {
     const gameID = Date.now() + String(Math.floor(Math.random() * 100));
     socket1.join(gameID);
     socket2.join(gameID);
-    this.games[gameID] = new Board(socket1, socket2, gameID);
+    let player0;
+    let player2;
+    if (Math.round(Math.random()) === 1) {
+      player0 = socket1;
+      player2 = socket2;
+    } else {
+      player0 = socket2;
+      player2 = socket1;
+    }
 
-    server.io.to(gameID).emit('game:create', {
+    this.games[gameID] = new Board(player0, player2, gameID);
+
+    player0.emit('game:create', {
       gameID,
       IBN: this.games[gameID].IBN,
+      side: 0,
+      playerID: player0.id,
+    });
+
+    player2.emit('game:create', {
+      gameID,
+      IBN: this.games[gameID].IBN,
+      side: 2,
+      playerID: player2.id,
     });
   },
 

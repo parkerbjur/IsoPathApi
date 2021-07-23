@@ -1,16 +1,13 @@
 const { io } = require('../interaction/server');
 
 class Board {
-  constructor(socket1, socket2, gameID) {
+  constructor(player0, player2, gameID) {
+    this.side = {};
+    this.side[player0.id] = 0;
+    this.side[player2.id] = 2;
+    this.player0 = player0;
+    this.player2 = player2;
     this.gameID = gameID;
-
-    if (Math.round(Math.random()) === 1) {
-      this.player1 = socket1;
-      this.player2 = socket2;
-    } else {
-      this.player1 = socket2;
-      this.player2 = socket1;
-    }
   }
 
   IBN = {
@@ -58,8 +55,8 @@ class Board {
   }
 
   playMove(data) {
-    const { move } = data;
-    if (Board.moveIsValid(this.IBN, move)) {
+    const { move, playerID } = data;
+    if (Board.moveIsValid(this.IBN, move) && this.side[playerID] === this.IBN.turn) {
       this.IBN = Board.playMove(this.IBN, move);
       io.to(this.gameID).emit('move:confirm', this.IBN);
     } else {
