@@ -158,6 +158,41 @@ class Board {
     } return false;
   }
 
+  static allPossibleMoves(IBN) {
+    let allMoves = [];
+
+    const places = Object.entries(IBN.places);
+    for (let i = 0; i < places.length; i += 1) {
+      if (places[i][1].tile > 0 && places[i][1].stone === 1) {
+        for (let j = 0; j < places.length; j += 1) {
+          if (places[j][1].tile < 2 && places[j][1].stone === 1 && places[i] !== places[j]) {
+            for (let k = 0; k < places.length; k += 1) {
+              if (places[k][1].stone === IBN.turn) {
+                for (let l = 0; l < Board.adjacencyList[places[k][0]].length; l += 1) {
+                  if (Board.placesAreAdjacent(places[k][0], Board.adjacencyList[places[k][0]][l])) {
+                    allMoves.push({
+                      tile: {
+                        source: places[i][0],
+                        sink: places[j][0],
+                      },
+                      stone: {
+                        source: places[k][0],
+                        sink: Board.adjacencyList[places[k][0]][l],
+                      },
+                    });
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    allMoves = allMoves.filter((move) => Board.moveIsValid(IBN, move));
+    allMoves = [...new Set(allMoves)];
+    return allMoves;
+  }
+
   static adjacencyList = {
     A1: ['A2', 'A4', 'B1', 'B2'],
     A2: ['A1', 'A3', 'B2', 'B3'],
