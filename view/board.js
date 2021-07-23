@@ -57,7 +57,7 @@ function submitMove(move) {
   state = 'tileSource';
   proposedMove = {tile: {source: undefined, sink: undefined}, stone: {source: undefined, sink: undefined}}
   document.getElementById('moveSubmit').style.color = 'black';
-  socket.emit('game:playMove', { move, gameID });
+  socket.emit('game:playMove', { move, gameID, playerID });
 }
 
 let proposedMove = {
@@ -259,6 +259,7 @@ function initializeCanvas() {
 const socket = io();
 let gameID;
 let IBN;
+let playerID;
 
 function joinGame() {
   document.getElementById('gameSearch').remove();
@@ -266,8 +267,9 @@ function joinGame() {
 }
 
 socket.on('game:create', (data) => {
-  ({ gameID, IBN } = data);
+  ({ gameID, IBN, playerID, side } = data);
   console.log(data);
+  if(side == 0){reverseBoard()}
   updateBoard(IBN);
   document.getElementById('reverseButton').style.display = 'block';
   document.getElementById('moves').style.display = 'block';
@@ -279,3 +281,9 @@ socket.on('move:confirm', (newIBN) => {
   console.log(newIBN, objs);
   updateBoard(newIBN);
 });
+
+socket.on('move:reject', (newIBN) => {
+  IBN = newIBN;
+  console.log(newIBN, objs);
+  updateBoard(newIBN);
+})
