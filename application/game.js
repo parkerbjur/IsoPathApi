@@ -1,4 +1,6 @@
 const { Board } = require('./board');
+const { AiBoard } = require('./aiBoard');
+const { io } = require('../interaction/server');
 
 module.exports = {
   games: {},
@@ -37,5 +39,16 @@ module.exports = {
   playMove(args) {
     const { gameID } = args;
     this.games[gameID].playMove(args);
+  },
+
+  createAiGame(socket) {
+    const gameID = Date.now() + String(Math.floor(Math.random() * 100));
+    this.games[gameID] = new AiBoard(socket, gameID);
+    io.to(socket.id).emit('game:create', {
+      gameID,
+      IBN: this.games[gameID].IBN,
+      side: 0,
+      playerID: socket.id,
+    });
   },
 };
