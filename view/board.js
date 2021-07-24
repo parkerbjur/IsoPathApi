@@ -261,8 +261,15 @@ let gameID;
 let IBN;
 let playerID;
 
+function challengeAi() {
+  document.getElementById('gameSearch').remove();
+  document.getElementById('challengeAi').remove();
+  socket.emit('game:challengeAi');
+}
+
 function joinGame() {
   document.getElementById('gameSearch').remove();
+  document.getElementById('challengeAi').remove();
   socket.emit('game:search');
 }
 
